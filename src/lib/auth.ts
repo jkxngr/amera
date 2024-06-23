@@ -12,10 +12,13 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.user = {
-          ...token.user,
-          ...user,
+          ...(typeof token.user === "object" && token.user !== null
+            ? token.user
+            : {}),
+          ...(typeof user === "object" && user !== null ? user : {}),
         };
       }
+
       return token;
     },
     async session({ session, token }) {
